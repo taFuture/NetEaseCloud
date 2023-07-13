@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    网易云
+  </title>
+  <link rel="shortcut icon" href="//s1.music.126.net/style/favicon.ico?v20180823">
+  <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.css">  
+</head>
+
+<body>
+  <div id="app">默认值</div>
+</body>
+<% htmlWebpackPlugin.options.cdn.script.forEach(function (item) {%>
+  <script src="<%=item%>"></script>
+  <%})%>
+  <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"> </script>
+
+</html>
