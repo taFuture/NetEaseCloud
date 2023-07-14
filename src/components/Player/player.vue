@@ -1,7 +1,7 @@
 <template>
    <div class="text-[1vw]">
-        <div class="h-[11vw] px-[4.7vw] flex justify-between items-center bg-[#fbfefe] dark:bg-[#1f2129]" @click="playShow">
-            <div class="flex items-center">
+        <div class="h-[11vw] px-[4.7vw] flex justify-between items-center bg-[#fbfefe] dark:bg-[#1f2129]">
+            <div class="flex items-center" @click="playShow">
                 <div class="rounded-full w-[9vw] h-[9vw] bg-[#333] relative mr-[3vw] rotate" :class="{ 'paused-animation': !this?.$player ?._playing }">
                     <img :src="$player._currentTrack.al?.picUrl" alt="" class="w-[5vw] h-[5vw] rounded-full absolute top-[2vw] left-[2vw]"/>
                 </div>
@@ -57,7 +57,6 @@
 </template>
 <script>
     import store from 'storejs'
-    // import $player from './$player';
     export default {
         data() {
             return {

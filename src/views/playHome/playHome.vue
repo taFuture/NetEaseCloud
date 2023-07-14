@@ -1,5 +1,5 @@
 <template>
-    <div class="">
+    <div class="html">
         <!-- 背景图 -->
         <div class="fixed z-[1] top-0 left-0 bottom-0 right-0 bg" :style="`background-image:url(${$player._currentTrack.al?.picUrl})`"></div>
         <!-- 模糊蒙版 -->
@@ -21,7 +21,7 @@
                     <img :src="$player._currentTrack.al?.picUrl" alt="" class="w-[43vw] h-[43vw] rounded-full absolute left-1/2 top-1/2 translate-x-[-50%] translate-y-[-50%] spinning" :class="{ 'paused-animation': !this?.$player ?._playing }">
                 </div>
                 <!-- 指针 -->
-                <div class="absolute top-[-3%] left-[50%] translate-x-[-50%]  z-[10] rotated w-[30vw] h-[43vw] rotated " :style="!$player._playing ? `transform:rotate(-20deg)`:`transform:rotate(5deg)`">
+                <div class="absolute top-[-3%] left-[50%] translate-x-[-50%]  z-[10] rotated w-[30vw] h-[43vw] rotated" :style="!$player._playing ? `transform:rotate(-20deg)`:`transform:rotate(5deg)`" ref="pointer">
                     <img src="/static/needle-ab.png" alt="" class="h-[40vw] absolute top-[-3vw] left-[-3vw] ">
                 </div>
             </div>
@@ -43,11 +43,11 @@
             <!-- 暂停开始循环列表 -->
             <div class="flex justify-between items-center px-[10vw] mt-[6.5vw]">
                 <Icon icon="ps:random" color="white" class="w-[8vw] h-[8vw]"/>
-                <Icon icon="fluent:next-16-filled" color="white" :horizontalFlip="true" class="w-[8vw] h-[8vw]"/>
+                <Icon icon="fluent:next-16-filled" color="white" :horizontalFlip="true" class="w-[8vw] h-[8vw]" @click.native="previousSongPlay"/>
                 <div class="w-[15.7vw] h-[15.7vw] relative border-2 border-[#fff] rounded-full" @click="$player.playOrPause()">
                     <Icon :icon="`${$player._playing ? 'carbon:pause-filled' : 'ph:play-fill'}`"  color="white" class="w-[7vw] h-[7vw] absolute left-1/2 top-1/2 translate-x-[-50%] translate-y-[-50%]"/>
                 </div>
-                <Icon icon="fluent:next-16-filled" color="white" class="w-[8vw] h-[8vw]"/>
+                <Icon icon="fluent:next-16-filled" color="white" class="w-[8vw] h-[8vw]" @click.native="nextSongPlay"/>
                 <Icon icon="iconamoon:playlist-fill" color="white" class="w-[8vw] h-[8vw]" @click.native="showMenu"/>
             </div>
             <van-popup v-model="showBottom" round position="bottom" :style="{ height: '75%' }">
@@ -74,7 +74,7 @@
                                     <img src="/static/wave (1).gif" alt="" class="w-[3vw] h-[3vw] mr-[2vw] red-image" v-if="item.id === $player._currentTrack.id">
                                     <p class="text-[4vw] " :class="item.id === $player._currentTrack.id ? 'text-[#D15B57]' : ''">
                                         {{ item.name }}·
-                                        <span class="text-[#b1b1b1]" :class="item.id === $player._currentTrack.id ? 'text-[#D15B57]' : ''"> {{ item.ar[0].name }}</span>
+                                        <span class="" :class="item.id === $player._currentTrack.id ? 'text-[#D15B57]' : 'text-[#b1b1b1]'"> {{ item.ar[0].name }}</span>
                                     </p>
                                 </div>
                                 <div>
@@ -102,18 +102,12 @@
         },
         async created() {
             this.music = store.get('cookie_music')
-            console.log(this.music);
         },
         methods: {
             // 去上一个页面
             go() {
                 this.$router.go(-1)
             },
-            // 点到那个播哪个
-            // playShow(item) {
-            //     console.log(111);
-            //     this.$player.replacePlaylist(this.songlist.map((song) => song.id),'','',item.id);
-            // },
             playSingle(id) {
                 this.$player.replacePlaylist(
                     this.music.map((song) => song.id),
@@ -146,6 +140,26 @@
             // 音乐列表的显示隐藏
             showMenu() {
                 this.showBottom = !this.showBottom
+            },
+            // 点击播放下一个
+            nextSongPlay() {
+                this.$refs.pointer.style = "transform:rotate(-20deg)";
+                setTimeout(() => {
+                    this.$player.playOrPause();
+                    this.$player._nextTrackCallback();
+                },500)
+            },
+            // 点击播放上一首
+            previousSongPlay() {
+                this.$refs.pointer.style = "transform:rotate(-20deg)";
+                setTimeout(() => {
+                    this.$player.playOrPause();
+                    if (this.$player.list.indexOf(this.$player._currentTrack.id) == 0) {
+                        this.playSingle(this.$player.list[this.$player.list.length - 1]);
+                    }else {
+                        this.playSingle(this.$player.list[this.$player.list.indexOf(this.$player._currentTrack.id) - 1]);
+                    }
+                }, 500)
             }
         }
         
@@ -200,5 +214,27 @@
 
     .red-image {
         filter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='colorize'><feColorMatrix type='matrix' values='1 0 0 0 0.698 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'/></filter></svg>#colorize");
+    }
+
+    
+    .transition-container {
+        animation: slide-up 0.5s ease-out;
+        /* 过渡动画 */
+        position: relative;
+        /* 相对定位 */
+        top: 0;
+        /* 初始位置在视口底部之外 */
+    }
+
+    @keyframes slide-up {
+        0% {
+            top: 100vh;
+            /* 初始位置在视口底部之外 */
+        }
+
+        100% {
+            top: 0;
+            /* 结束位置为视口顶部 */
+        }
     }
 </style>

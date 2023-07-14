@@ -43,5 +43,10 @@ export default [
       path: '/playHome/',
       // 懒加载
       component:() => import('@/views/playHome/playHome.vue')
+    },
+    {
+      path: '/MV/',
+      // 懒加载
+      component:() => import('@/views/MVView/MV.vue')
     }
 ];

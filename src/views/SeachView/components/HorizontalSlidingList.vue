@@ -14,7 +14,7 @@
         <div class="py-[0.5vw]">
           <div v-for="(key, index) in item.tracks.slice(0,20)" :key="key.id" class="my-[2.7vw] flex items-center">
             <span class="text-[3.2vw] mr-[4vw]" :class="{ text_ff2c41d: index < 3, text_7d848d: index >= 3 }">{{ index+1 }}</span>
-            <span class="text-ellipsis w-[35.7vw] text-[3.2vw] text-[#000] dark:text-[#fff] mr-[1vw]" :class="{ 'bold': index <= 2 }">{{key.name}}</span>
+            <span class="w-[35.7vw] text-[3.2vw] text-[#000] dark:text-[#fff] mr-[1vw] truncate" :class="{ 'bold': index <= 2 }">{{key.name}}</span>
           </div>
         </div>
       </van-swipe-item>

@@ -68,3 +68,6 @@ export const replaceUserDetail = (gender,birthday,nickname,city,signature) => ht
 
 // 关注
 export const fetchFollow = () => http.get('/artist/list?type=2&area=96&initial=b')
+
+// MV排行
+export const fetchMVlist = (area) => http.get('/top/mv', { params: { limit: 50, area } });

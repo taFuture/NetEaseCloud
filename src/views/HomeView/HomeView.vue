@@ -71,7 +71,7 @@
                 </main>
                 <!-- 排行榜 -->
                 <main class="mt-[4.722vw] dark:border-[#333] border-solid border-b border-slate-[ebedf2] pb-[2.722vw] box-border">
-                    <p class="ml-[4.5vw]">
+                    <p class="ml-[4.5vw]" @click="() => this.$router.push('/MV')">
                         <span class="font-bold text-[5vw] dark:text-[#f0f0f0]  text-[color:#333333]">排行榜</span>
                         <Icon icon="ep:arrow-left-bold" :horizontalFlip="true" :verticalFlip="true" class="inline-block mt-[-2vw] w-[4vw] h-[4vw] dark:text-[#f0f0f0]  text-[color:#333333]"/>
                         <Icon icon="ant-design:more-outlined" :horizontalFlip="true" :verticalFlip="true" class="float-right w-[6vw] h-[6vw] dark:text-[#f0f0f0]  text-[color:#333333]" @click.native="drawVisible = !drawVisible,info='排行榜'"/>
@@ -112,7 +112,7 @@
                                 <div v-for="item in date" :key="item.id" class="flex justify-between mt-[2.8vw]">
                                     <div class="flex flex-col justify-center w-[65vw] h-[15.7vw]">
                                         <p class="dark:text-[#f0f0f0]  text-[color:#333333]">今天 {{Cover(new Date().getMonth() + 1)}}/{{new Date().getDate()}}</p>
-                                        <p class="mt-[1vw] font-bold text-[4vw] w-[65vw] text-ellipsis dark:text-[#f0f0f0] text-[#333]">{{ item.title }}</p>
+                                        <p class="mt-[1vw] font-bold text-[4vw] w-[65vw] truncate dark:text-[#f0f0f0] text-[#333]">{{ item.title }}</p>
                                     </div>
                                     <div>
                                         <img :src="item.imgUrl" alt="" class="w-[16vw] h-[16vw] rounded-lg">
@@ -451,12 +451,11 @@ export default {
         filter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='colorize'><feColorMatrix type='matrix' values='1 0 0 0 0.698 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'/></filter></svg>#colorize");
     }
 
-    .text-ellipsis {
-        /* display: inline-block; */
+    /* .trunca {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-    }
+    } */
 
     .line {
         border: 1px solid #ebedf2;
@@ -503,5 +502,26 @@ export default {
 
     .abc-leave-to{
         transform: translateY(-100%) scale(.7);
+    }
+
+    .transition-container {
+        animation: slide-up 0.5s ease-out;
+        /* 过渡动画 */
+        position: relative;
+        /* 相对定位 */
+        top: 0;
+        /* 初始位置在视口底部之外 */
+    }
+
+    @keyframes slide-up {
+        0% {
+            top: 100vh;
+            /* 初始位置在视口底部之外 */
+        }
+
+        100% {
+            top: 0;
+            /* 结束位置为视口顶部 */
+        }
     }
 </style>

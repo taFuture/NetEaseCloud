@@ -6,7 +6,7 @@ import BScroll from '@better-scroll/core';
 import { areaList } from '@vant/area-data';
 dayjs.extend(relativeTime);
 dayjs.locale('zh-cn');
-import {getUserAccount,getUserDetail,getUserPlaylist,getIPAddr,ip2Territory,getUserHistory,getSongDetail,fetchUserHistory,fetchSongDetail,fetchFollow,fetchSongList } from '@/request'
+import {getUserAccount,getUserDetail,getUserPlaylist,getIPAddr,ip2Territory,fetchUserHistory,fetchSongDetail,fetchFollow } from '@/request'
 const Wrapper = styled.div``;
 export default {
     render() {
@@ -283,6 +283,7 @@ export default {
         // 创建歌单
         this.creatSong = res2.data.playlist.filter(item => !item.subscribed)
         // console.log(this.creatSong);
+        // console.log(res2.data.playlist);
         // 收藏歌单
         this.collectSong = res2.data.playlist.filter(item => item.subscribed)
         // console.log(this.collectSong);
