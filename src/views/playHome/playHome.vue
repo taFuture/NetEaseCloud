@@ -14,7 +14,7 @@
                 <Icon icon="ri:share-circle-line" color="white" class="w-[6vw] h-[6vw]"/>
             </header>
             <!-- 磁片 -->
-            <div class="relative top-[10%] w-[100vw] h-[120vw]">
+            <div class="relative top-[10%] w-[100vw] h-[120vw]" v-if="!lyricsShow" @click="lyricsShow = !lyricsShow">
                 <!-- 唱片 -->
                 <div class="absolute left-1/2 top-1/2 translate-x-[-50%] translate-y-[-60%]">
                     <img src="/static/record.png" alt="" class="w-[65.7vw] h-[65.7vw]">
@@ -23,6 +23,23 @@
                 <!-- 指针 -->
                 <div class="absolute top-[-3%] left-[50%] translate-x-[-50%]  z-[10] rotated w-[30vw] h-[43vw] rotated" :style="!$player._playing ? `transform:rotate(-20deg)`:`transform:rotate(5deg)`" ref="pointer">
                     <img src="/static/needle-ab.png" alt="" class="h-[40vw] absolute top-[-3vw] left-[-3vw] ">
+                </div>
+            </div>
+            <!-- 歌词 -->
+            <div class="w-[100%] h-[120vw] px-[7.5vw] mt-[6.48vw] relative overflow-hidden" v-if="lyricsShow" @click="lyricsShow = !lyricsShow">
+                <div class="flex justify-between">
+                    <Icon icon="clarity:volume-up-line" color="#717171" class="w-[7vw] h-[7vw]"/>
+                    <div class="w-[24vw] h-[7.8vw] rounded-[3.9vw] border-[0.7vw] border-[#717171] flex justify-between items-center p-[0.5vw]">
+                        <p class="text-[#fff] bg-[#3a3a3a] bg-opacity-20 text-center py-[1vw] rounded-[3vw] w-[11.5vw]">歌词</p>
+                        <p class="text-[#fff] text-center w-[11.5vw]">百科</p>
+                    </div>
+                    <Icon icon="fluent:tv-16-regular" color="#717171" class="w-[7vw] h-[7vw]"/>
+                </div>
+                <!-- 内容 -->
+                <div class="absolute top-[7vw] left-[50%] translate-x-[-50%] transition-all duration-1000 mx-auto text-center" :style="{ top: -$player.lineHieght + 'vw'}">
+                    <div v-for="(item,index) in $player.lyricLines" :key="index" class="text-[hsla(0,0%,88.2%,.8)] line-clamp-2 w-[100%] h-[12vw] px-[4vw] flex justify-center text-center" :style="{color:index === $player.lineIndex ? '#fff' : 'hsla(0,0%,88.2%,.7)'}">
+                        {{ item.txt }}
+                    </div>
                 </div>
             </div>
             <!-- 收藏下载评论更多 -->
@@ -70,7 +87,7 @@
                     <section class="text-[#333]">
                         <ul>
                             <li v-for="item in music" :key="item" class="flex justify-between my-[5vw]" @click="playSingle(item.id)">
-                                <div class="flex items-center w-[65vw] text-ellipsis">
+                                <div class="flex items-center w-[65vw] truncate">
                                     <img src="/static/wave (1).gif" alt="" class="w-[3vw] h-[3vw] mr-[2vw] red-image" v-if="item.id === $player._currentTrack.id">
                                     <p class="text-[4vw] " :class="item.id === $player._currentTrack.id ? 'text-[#D15B57]' : ''">
                                         {{ item.name }}·
@@ -97,7 +114,7 @@
                 isPlaying: false,
                 showBottom:false, // 列表显示
                 music:[],
-                // songlist:{}, // 歌单列表 
+                lyricsShow:true,
             }
         },
         async created() {
@@ -143,7 +160,7 @@
             },
             // 点击播放下一个
             nextSongPlay() {
-                this.$refs.pointer.style = "transform:rotate(-20deg)";
+                if(this.$refs.pointer) this.$refs.pointer.style = "transform:rotate(-20deg)";
                 setTimeout(() => {
                     this.$player.playOrPause();
                     this.$player._nextTrackCallback();
@@ -151,7 +168,7 @@
             },
             // 点击播放上一首
             previousSongPlay() {
-                this.$refs.pointer.style = "transform:rotate(-20deg)";
+                if(this.$refs.pointer) this.$refs.pointer.style = "transform:rotate(-20deg)";
                 setTimeout(() => {
                     this.$player.playOrPause();
                     if (this.$player.list.indexOf(this.$player._currentTrack.id) == 0) {

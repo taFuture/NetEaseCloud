@@ -12,7 +12,7 @@
                 </div>
                 <div class="mr-[4vw] leading-[11vw] font-bold" :style="{ 'color': getNodeColor(index) }">{{index + 1}}</div>
                 <div class="flex flex-col justify-around mr-[5vw]">
-                    <p class="w-[47vw] font-bold text-ellipsis text-[4vw] dark:text-[#f0f0f0]  text-[color:#333333]">{{key.uiElement.mainTitle.title}}</p>
+                    <p class="w-[47vw] font-bold truncate text-[4vw] dark:text-[#f0f0f0]  text-[color:#333333]">{{key.uiElement.mainTitle.title}}</p>
                     <p class="dark:text-[#f0f0f0]  text-[color:#333333]">{{key.resourceExtInfo?.artists[0].name}}</p>
                 </div>
                 <div class="flex items-center justify-center">

@@ -23,25 +23,21 @@
                                     </span>
                                 </div>
                                 <div class="flex items-center mt-[4.07vw]">
-                                    <div class="mr-[5vw] text-[5vw] relative" :class="index < 3 ? 'text-[#f83e3c]' : 'text-[#999]'">
+                                    <div class="mr-[5vw] text-[5vw] flex flex-col items-center" :class="index < 3 ? 'text-[#f83e3c]' : 'text-[#999]'">
                                         <div>{{ index + 1 }}</div>
-                                        <div class="flex absolute right-[-1.1vw] bottom-[-2.5vw]">
+                                        <div class="flex">
                                             <span v-if="key.lastRank == index + 1" class="text-[#898989] flex">
                                                 <Icon icon="ci:line-m" :rotate="1" />
                                             </span>
                                             <span v-else-if="key.lastRank <= index + 1 && key.lastRank != -1" class="text-[#71b3e2] flex text-[2vw] items-center">
-                                                <Icon icon="ph:triangle-fill" :rotate="2" /><i>{{
-                                                    index + 1 - key.lastRank
-                                                }}</i>
+                                                <Icon icon="ph:triangle-fill" :rotate="2" />
+                                                <i>{{index + 1 - key.lastRank}}</i>
                                             </span>
-                                            <span v-else-if="key.lastRank >= index + 1"
-                                                class="text-[#e66263] flex text-[2vw] items-center">
-                                                <Icon icon="ph:triangle-fill" /><i>{{
-                                                    key.lastRank - (index + 1)
-                                                }}</i>
+                                            <span v-else-if="key.lastRank >= index + 1" class="text-[#e66263] flex text-[2vw] items-center">
+                                                <Icon icon="ph:triangle-fill" />
+                                                <i>{{key.lastRank - (index + 1)}}</i>
                                             </span>
-                                            <span v-else
-                                                class="text-[#6d9c65] flex text-[1vw] items-center absolute right-[-3vw] bottom-0">NEW</span>
+                                            <span v-else class="text-[#6d9c65] flex text-[1vw] items-center">NEW</span>
                                         </div>
                                     </div>
                                     <div class="">

@@ -3,7 +3,7 @@
       <router-view />
       <div class="fixed bottom-0">
         <!-- 播放器 -->
-        <Player class="w-[100%] z-[30]" v-if="showPlayer" :class="showMenu ? 'bottom-0' : 'bottom-[12.5vw]'"></Player>
+        <Player class="w-[100%] z-[30]" v-if="showPlayer"></Player>
         <!-- 菜单 -->
         <van-tabbar v-model="active" route active-color="#f53d5b" inactive-color="#949ba1" class="dark:bg-[#1f2129]" v-if="showMenu">
           <van-tabbar-item replace to="/HomeView" icon="home-o">

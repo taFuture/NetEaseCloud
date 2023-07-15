@@ -115,7 +115,8 @@
                             <div class="mr-[5.8vw] text-[#808080] dark:text-[#a3aebf]">{{ index+1 }}</div>
                             <div>
                                 <div class="flex">
-                                    <p>{{item.name}}</p>
+                                    <img src="/static/wave (1).gif" alt="" class="w-[3vw] h-[3vw] mr-[2vw] red-image" v-if="item.id === $player._currentTrack.id">
+                                    <p :class="item.id === $player._currentTrack.id ? 'text-[#D15B57]' : ''">{{item.name}}</p>
                                     <!-- <p>({{ item.alia }})</p> -->
                                 </div>
                                 <div class="w-[60vw] text-ellipsis">

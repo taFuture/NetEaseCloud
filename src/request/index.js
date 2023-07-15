@@ -64,10 +64,14 @@ export const fetchSongDetail = (ids) => http.get('/song/detail', { params: { ids
 export const getMP3 = (id) => http.get('/song/url/v1',{params:{id,level:'standard'}})
 
 // 更换用户信息
-export const replaceUserDetail = (gender,birthday,nickname,city,signature) => http.get('/user/update',{params:{gender,birthday,nickname,city,signature}})
+export const replaceUserDetail = (gender,birthday,nickname,province,city,signature) => http.get('/user/update',{params:{gender,birthday,nickname,province,city,signature}})
 
 // 关注
 export const fetchFollow = () => http.get('/artist/list?type=2&area=96&initial=b')
 
 // MV排行
 export const fetchMVlist = (area) => http.get('/top/mv', { params: { limit: 50, area } });
+
+// 歌词
+export const lyricText = (id) => http.get('/lyric', { params: { id } });
+
