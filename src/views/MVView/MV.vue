@@ -10,12 +10,12 @@
             <van-tabs swipeable animated class="mt-[15vw]" v-model="currentDisplayIndex">
                 <van-tab v-for="index in title" :key="index" :title="index" :name="index" class="sticky top-[10vw] dark">
                     <section class="mt-[5.5vw] w-[92vw] mx-auto font-bold">
-                        <div class="flex items-center mb-[5.2vw] dark:text-[#fff]" >更新时间：{{ convertDate(date) }}
+                        <div class="text-[#333] flex items-center mb-[5.2vw] dark:text-[#fff]" >更新时间：{{ convertDate(date) }}
                             <Icon icon="quill:warning-alt" color="#b3b3b3" class="w-[5vw] h-[5vw]" />
                         </div>
                         <div>
                             <div class="mb-[4.07vw]" v-for="(key, index) in MV" :key="index">
-                                <div class="relative">
+                                <div class="relative" @click="displayId(key.id)">
                                     <img :src="key.cover" alt="" class="w-[91vw] h-[51.8vw] rounded-[1.5vw]">
                                     <span class="absolute top-[2.2vw] right-[2.5vw] flex items-center text-[#fff]">
                                         <Icon icon="ion:play-outline" color="white" class="w-[3vw] h-[3vw] mr-[1vw]" />
@@ -41,7 +41,7 @@
                                         </div>
                                     </div>
                                     <div class="">
-                                        <p class="text-[4vw] font-bold truncate w-[85.5vw] mb-[1vw] dark:text-[#fff]">{{ key.name }}</p>
+                                        <p class="text-[#333] text-[4vw] font-bold truncate w-[85.5vw] mb-[1vw] dark:text-[#fff]">{{ key.name }}</p>
                                         <p class="text-[#a3a3a3]">{{ key.artistName }}</p>
                                     </div>
                                 </div>
@@ -83,7 +83,7 @@ export default {
             console.log(index);
             this.MV = res.data.data;
             this.date = res.data.updateTime
-            console.log(res);
+            // console.log(this.MV);
         },
         // 转换时分秒
         convertDate(times) {
@@ -93,6 +93,11 @@ export default {
             const day = date.getDate().toString().padStart(2, '0');  // 提取日期，并补齐两位
             const formattedDate = `${month}月${day}日`; 
             return formattedDate
+        },
+        // 点击获取对应的ID
+        displayId(id) {
+            console.log(id);
+            this.$router.push({name:'/MVplay/',params:{id}})
         }
     },
     async created() {
@@ -127,6 +132,7 @@ export default {
         background-color: #2C2C2C !important;
         color: #e3e3e3;
     }
+    
     .van-tabs__wrap .van-tabs__nav{
         color: #e3e3e3;
         background-color: #fff !important;

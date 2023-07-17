@@ -5,7 +5,7 @@ export default [
     // 路径重定向
     {
       path: '/',
-      redirect: '/HomeView',
+      redirect: '/MVplay',
     },
     {
       path: '/SeachView/',
@@ -48,5 +48,11 @@ export default [
       path: '/MV/',
       // 懒加载
       component:() => import('@/views/MVView/MV.vue')
+    },
+    {
+      path: '/MVplay/',
+      // 懒加载
+      name: '/MVplay/',
+      component:() => import('@/views/MVplay/MVplay.vue')
     }
 ];
