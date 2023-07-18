@@ -97,7 +97,7 @@ export default {
         // 点击获取对应的ID
         displayId(id) {
             console.log(id);
-            this.$router.push({name:'/MVplay/',params:{id}})
+            this.$router.push({name:'MVplay',params:{id}})
         }
     },
     async created() {
@@ -139,7 +139,7 @@ export default {
     }
 
     .dark .van-tab .van-tab__text.van-tab__text--ellipsis{
-        /* font-size:4vw; */
+        font-size:4vw;
         color:#e3e3e3;
     }
 </style>

@@ -11,77 +11,142 @@
             </div>
         </header>
         <!-- 视频 -->
-        <section class="mt-[40vw]">
-            <video :src="playUrl"></video>
+        <section class="mt-[40vw] relative" @click="playVideo">
+            <video :src="videoUrl" ref="video"></video>
+            <Icon icon="ph:play-fill" class="text-[#fff] opacity-60 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] z-[5] w-[20vw] h-[20vw]" v-if="showIcon"/>
         </section>
         <!-- 视频信息 -->
-        <section class="h-[69.8vw] mt-[5vw] flex justify-between overflow-hidden px-[4.6vw]">
-            <div class="mt-[41.296vw]">
-                <div class="flex w-[30vw] justify-between items-center mb-[3.4vw]">
+        <section class="h-[69.8vw] mt-[5vw] flex justify-between px-[4.6vw]">
+            <div class="flex justify-between items-end">
+                <div class="flex flex-col justify-between mb-[3.4vw] ">
                     <div class="relative">
-                        <div>{{ videoDetail?.artists[0]?.img1v1Url }}</div>
-                        <img :src="videoDetail?.artists[0]?.img1v1Url" alt="" class="w-[9.5vw] h-[9.5vw] border border-[#fff] rounded-full">
-                        <p class="absolute w-[3.2vw] h-[3.2vw] rounded-full bg-[#ec2e2d] text-center top-[6vw] left-[6.5vw]" >V</p>
+                        <img :src="item.img1v1Url" alt="" class="w-[9.5vw] h-[9.5vw] border-2 border-[#fff] rounded-full absolute top-[-3vw]" v-for="(item,index) in MvDetailImg" :key="index" :class="index === 0 ? 'z-30' : 'z-10 ml-[4vw]'">
+                        <p class="absolute w-[3.2vw] h-[3.2vw] rounded-full bg-[#ec2e2d] text-center top-[6vw] left-[6.5vw]" v-if="index == 0">V</p>
+                        <div class="flex ml-[13vw] pb-[3vw]">
+                            <span class="mr-[2vw]">{{ MvDetail?.artists[0]?.name }}</span>
+                            <span class="w-[6.6vw] h-[5.18vw] bg-[#ec2e2d] rounded-[3.5vw] flex justify-center">
+                                <Icon icon="carbon:add" color="white" class="w-[5vw] h-[5vw]"/>
+                            </span>
+                        </div>
                     </div>
-                    <span>{{ videoDetail?.artists[0]?.name }}</span>
-                    <span class="w-[6.6vw] h-[5.18vw] bg-[#ec2e2d] rounded-[3.5vw]">
-                        <Icon icon="carbon:add" color="white" class="w-[5vw] h-[5vw]"/>
-                    </span>
+                    <van-collapse v-model="activeName" accordion class="w-[73.2vw]">
+                        <van-collapse-item name="1">
+                            <template #title>
+                                <div>
+                                    <h1>
+                                        <span class="w-[7.3vw] mr-[2vw] leading-[5.2vw] text-center inline-block bg-[#333333] text-[#ACACAC]">MV</span>
+                                        {{ MvDetail.name }}
+                                    </h1>
+                                </div>
+                            </template>    
+                            {{ MvDetail.desc }}
+                        </van-collapse-item>
+                    </van-collapse>
+                    <div class="mt-[3.8vw]">{{MvDetail.publishTime}}</div>
                 </div>
-                <div class="flex items-center w-[73.2vw]">
-                    <span class="w-[8vw] h-[5vw] text-center bg-[#333] font-bold text-[4vw]">MV</span>
-                    <p>{{ videoDetail.name }}</p>
-                </div>
-                <div>2023-06-25</div>
             </div>
             <div>
-                <div class="mb-[5vw]">
+                <div class="mb-[5vw] flex flex-col items-center">
                     <Icon icon="ant-design:like-filled" color="white" class="w-[7vw] h-[7vw]"/>
-                    <span>{{ dataTruncation(videoDetail.playCount) }}</span>
+                    <span>{{ dataTruncation(loveCount.likedCount) }}</span>
                 </div>    
-                <div class="mb-[5vw]">
-                    <Icon icon="ant-design:message-outlined" color="white" class="w-[7vw] h-[7vw]"/>
-                    <span>{{ dataTruncation(videoDetail.commentCount) }}</span>
+                <div class="mb-[5vw] flex flex-col items-center">
+                    <Icon icon="ant-design:message-outlined" color="white" class="w-[7vw] h-[7vw]" @click.native="showMsg"/>
+                    <span>{{ dataTruncation(loveCount.commentCount) }}</span>
                 </div>            
-                <div class="mb-[5vw]">
+                <div class="mb-[5vw] flex flex-col items-center">
                     <Icon icon="majesticons:share" color="white" class="w-[7vw] h-[7vw]"/>
-                    <span>{{ dataTruncation(videoDetail.shareCount) }}</span>
+                    <span>{{ dataTruncation(loveCount.shareCount) }}</span>
                 </div>
-                <div>
+                <div class="flex flex-col items-center">
                     <Icon icon="fluent:collections-20-regular" color="white" class="w-[7vw] h-[7vw]"/>
                     <span>收藏</span>
                 </div>
             </div>
         </section>
+        <!-- 视频播放 -->
+        <section class="flex justify-between px-[4.6vw] items-center">
+            <div class="flex justify-between items-center w-[42.9vw]">
+                <Icon icon="iconamoon:music-1-fill" color="white" class="w-[5vw] h-[5vw]" />
+                <van-notice-bar scrollable :text="MvDetail.name" class="text-[#f9fcfb] text-[4vw] truncate w-[28vw] inline-block" >
+                    {{MvDetail.name}}- <span v-for="item in MvDetail.artists" :key="item">{{ item.name }}/</span>
+                </van-notice-bar>
+                <!-- <p class="truncate w-[28vw]">{{ MvDetail.name }} - <span v-for="item in MvDetail.artists" :key="item">{{ item.name }}/</span></p> -->
+                <Icon icon="solar:heart-linear" color="white" class="w-[5vw] h-[5vw]" />
+            </div>
+            <div class="relative w-[11vw] h-[11vw]">
+                <img src="/static/record.png" alt="" class="w-[11vw] h-[11vw]">
+                <img :src="MvDetail?.cover" alt="" class="w-[7.6vw] h-[7.6vw] rounded-[50%] absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] spinning">
+            </div>
+        </section>
+        <!-- 进度条 -->
+        <vue-slider v-model="$player.progress" :duration="0" :process="true" tooltip="none" :drag-on-click="true" :min="0" :max="videoUrl.length" :interval="0.1"  class="flex-1 h-[1vw] vue-slider"/>
+        <!-- 留言 -->
+        <section class="mx-[4.4vw] flex justify-between items-center mt-[5vw]">
+            <input type="text" placeholder="说点好听的吧~" class="bg-transparent">
+            <Icon icon="system-uicons:scale-extend" color="#7f7f7f" :horizontalFlip="true" class="w-[5vw] h-[5vw]"/>
+        </section>
+        <!-- 点击看评论并留言 -->
+        <van-popup v-model="getMsg" position="bottom" :style="{ height: '70%' }" class="text-[#000] pt-[7.13vw]">
+            <header class="px-[4.3vw] flex justify-between items-center">
+                <div class="text-[3vw]">评论</div>
+                <div class="flex justify-between w-[30vw]">
+                    <span>推荐</span>
+                    <span class="text-[#bdbdbd]">最热</span>
+                    <span class="text-[#bdbdbd]">最新</span>
+                </div>
+            </header>
+            <section class="flex justify-between px-[4vw ]">
+                <div>
+                    <img src="" alt="">
+                </div>
+                <div>
+
+                </div>
+            </section>
+        </van-popup>
     </div>
 </template>
 <script>
-    import {featMvUrl,featMvDetail,featMvDetailInfo} from '@/request'
+    import {featMvUrl,featMvDetail,featMvDetailInfo,featCommentMv} from '@/request'
     export default {
         data() {
             return {
-                playUrl:'',
-                videoDetail:'',
+                videoUrl:'',
+                MvDetail:[],
+                loveCount:[],
+                MV:[],
+                showIcon: false, // 暂停图标的显示
+                currentTime: 0,
+                duration: 0,
+                activeName: '1', // 折叠
+                getMsg:true, // 留言抽屉
+                commentMv:[] // 评论数据
             }
         },
         async created() {
             // 视频
-            await featMvUrl(this.$route.params.id).then((res) => {
-                console.log(res);
-                this.playUrl = res.data.data.url
-            }).catch((err) => {
-                console.log(err);
-            })
-            // 视频信息
-            await featMvDetail(this.$route.params.id).then((res) => {
-                console.log(res);
-                this.videoDetail = res.data.data
-                console.log(this.videoDetail);
-            }).catch((err) => {
-                console.log(err);
-            })
+            const res1 = await featMvUrl(this.$route.params.id);
+            this.videoUrl = res1.data.data.url;
+            // // 视频信息
+            const res2 = await featMvDetail(this.$route.params.id);
+            this.MvDetail = res2.data.data;
+            this.MvDetailImg = this.MvDetail.artists.slice(0,3);
+            console.log(this.MvDetail);
+            // // 点赞详情
+            const res3 = await featMvDetailInfo(this.$route.params.id);
+            this.loveCount = res3.data;
+            console.log(res1,res2,res3);
+            const res4 = await featCommentMv(this.$route.params.id)
+            this.commentMv = res4.data.comments;
+            console.log(this.commentMv);
+            // this.MV = res4.data.data;
         },
         methods:{
+            // 点击出留言
+            showMsg() {
+                this.getMsg = !this.getMsg
+            },
             dataTruncation(playVolume) {
                 if (playVolume > 100000000) {
                     return `${Math.floor(playVolume / 100000000)}亿`;
@@ -91,9 +156,83 @@
                     return playVolume;
                 }
             },
+            playVideo() {
+                if(this.$refs.video.paused) {
+                    this.$refs.video.play();
+                    this.showIcon = false;
+                }else {
+                    this.$refs.video.pause();
+                    this.showIcon = true;
+                }
+            }
         }
     }
 </script>
 <style>
+    .vue-slider-rail {
+        background-color: #6d6d6d;
+        
+    }
 
+    .vue-slider-process {
+        background-color: #fff;
+    }
+
+    .vue-slider {
+        height: 0.8vw !important;
+    }
+
+    input::placeholder {
+        color: #333;
+    }
+
+    .van-cell, .van-collapse-item__content {
+        background: transparent;
+        color: white;
+        /* position: static; */
+        font-size: 1vw;
+        padding: 0;
+    }
+
+    .van-collapse-item__content {
+        max-height: 97vw;
+        overflow: auto;
+    }
+
+    .van-cell--clickable:active {
+        background-color: #000;
+    }
+
+    .van-hairline--top-bottom,
+    .van-collapse {
+        border: none;
+        /* position: static; */
+    }
+
+    .van-hairline--top-bottom::after,
+    .van-cell::after {
+        border: none;
+    }
+
+    .van-notice-bar{
+        background-color: transparent !important;
+    }
+
+    .van-notice-bar__wrap .van-notice-bar__content{
+        color: white;
+    }
+
+    .spinning {
+        animation:spin 5s linear infinite;
+    }
+
+    @keyframes spin {
+        from {
+            transform: translate(-50%,-50%) rotate(0deg);
+            
+        }
+        to {
+            transform: translate(-50%,-50%) rotate(360deg);
+        }
+    }
 </style>

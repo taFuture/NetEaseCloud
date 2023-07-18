@@ -52,7 +52,7 @@ export default [
     {
       path: '/MVplay/',
       // 懒加载
-      name: '/MVplay/',
+      name: 'MVplay',
       component:() => import('@/views/MVplay/MVplay.vue')
     }
 ];

@@ -49,10 +49,10 @@
         return store.state.darkMode
       },
       showPlayer() {
-        return this.$route.path !== '/playHome' && this.$route.path !== '/Editorial' && this.$route.path !== '/MVplay'
+        return this.$route.path !== '/playHome' && this.$route.path !== '/Editorial' && this.$route.path !== '/MVplay' && this.$route.path !== '/Login'
       },
       showMenu() {
-        return this.$route.path !== '/SongSheet' && this.$route.path !== '/User' && this.$route.path !== '/Editorial' && this.$route.path !== '/SeachView' && this.$route.path !== '/MV' && this.$route.path !== '/MVplay'
+        return this.$route.path !== '/SongSheet' && this.$route.path !== '/User' && this.$route.path !== '/Editorial' && this.$route.path !== '/SeachView' && this.$route.path !== '/MV' && this.$route.path !== '/MVplay' && this.$route.path !== '/Login'
       }
     },
 

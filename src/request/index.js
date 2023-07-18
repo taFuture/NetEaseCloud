@@ -78,9 +78,11 @@ export const lyricText = (id) => http.get('/lyric', { params: { id } });
 // 排行榜视频
 export const featMvUrl = (id) => http.get('/mv/url', { params: { id } });
 
-// 排行榜视频信息
+//  排行榜视频信息
 export const featMvDetail = (mvid) => http.get('/mv/detail', { params: { mvid } });
 
 // 获取排行榜点赞转发评论数数据
 export const featMvDetailInfo = (mvid) => http.get('/mv/detail/info', { params: { mvid } });
 
+// MV 评论
+export const featCommentMv = (id) => http.get('/comment/mv', { params: { id } });

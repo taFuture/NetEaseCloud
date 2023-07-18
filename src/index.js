@@ -5,13 +5,13 @@ import { Icon } from '@iconify/vue2';
 import Drawer from '@/components/Drawer.vue'
 import VStickyElement  from  'vue-sticky-element'; 
 import router from '@/router';
-import { Popup,Area,Button,DatetimePicker,Circle,NoticeBar,Tab,Tabs,Tabbar,TabbarItem} from 'vant';
+import { Popup,Area,Button,DatetimePicker,Circle,NoticeBar,Tab,Tabs,Tabbar,TabbarItem,Collapse,CollapseItem} from 'vant';
 import Player from '@/components/Player';
 import 'vant/lib/index.css';
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
 Vue.use(Popup).use(Area).use(Button).use(DatetimePicker).use(Circle).use(NoticeBar).use(Tab).use(Tabs);
-Vue.use(Tabbar).use(TabbarItem)
+Vue.use(Tabbar).use(TabbarItem).use(Collapse).use(CollapseItem)
 Vue.use(Player)
 Vue.use(VStickyElement);
 Vue.component('VueSlider', VueSlider)
