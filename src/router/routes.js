@@ -5,7 +5,7 @@ export default [
     // 路径重定向
     {
       path: '/',
-      redirect: '/MVplay',
+      redirect: '/MV',
     },
     {
       path: '/SeachView/',

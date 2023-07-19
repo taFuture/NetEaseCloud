@@ -1,7 +1,7 @@
 <template>
     <div class="bg-[#000] text-[1vw] text-[#fff] h-screen">
         <!-- 头部 -->
-        <header class="flex justify-between items-center px-[4.6vw] h-[16vw]">
+        <header class="flex justify-between items-center px-[4.6vw] h-[16vw]" v-show="!getMsg">
             <div>
                 <Icon icon="ph:arrow-left-light" color="white" class="w-[7vw] h-[7vw]"/>
             </div>
@@ -11,8 +11,8 @@
             </div>
         </header>
         <!-- 视频 -->
-        <section class="mt-[40vw] relative" @click="playVideo">
-            <video :src="videoUrl" ref="video"></video>
+        <section class="mt-[40vw] relative transition-all" @click="playVideo" :class="getMsg ? 'mt-[0vw] z-[9999]' : 'mt-[40vw]'">
+            <video :src="videoUrl" ref="video" autoplay></video>
             <Icon icon="ph:play-fill" class="text-[#fff] opacity-60 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] z-[5] w-[20vw] h-[20vw]" v-if="showIcon"/>
         </section>
         <!-- 视频信息 -->
@@ -55,7 +55,7 @@
                     <span>{{ dataTruncation(loveCount.commentCount) }}</span>
                 </div>            
                 <div class="mb-[5vw] flex flex-col items-center">
-                    <Icon icon="majesticons:share" color="white" class="w-[7vw] h-[7vw]"/>
+                    <Icon icon="majesticons:share" color="white" class="w-[7vw] h-[7vw]" @click.native="showForward"/>
                     <span>{{ dataTruncation(loveCount.shareCount) }}</span>
                 </div>
                 <div class="flex flex-col items-center">
@@ -87,7 +87,7 @@
             <Icon icon="system-uicons:scale-extend" color="#7f7f7f" :horizontalFlip="true" class="w-[5vw] h-[5vw]"/>
         </section>
         <!-- 点击看评论并留言 -->
-        <van-popup v-model="getMsg" position="bottom" :style="{ height: '70%' }" class="text-[#000] pt-[7.13vw]">
+        <van-popup v-model="getMsg" position="bottom" :style="{ height: '74%' }" class="text-[#000] pt-[7.13vw]">
             <header class="px-[4.3vw] flex justify-between items-center">
                 <div class="text-[3vw]">评论</div>
                 <div class="flex justify-between w-[30vw]">
@@ -96,15 +96,29 @@
                     <span class="text-[#bdbdbd]">最新</span>
                 </div>
             </header>
-            <section class="flex justify-between px-[4vw ]">
-                <div>
-                    <img src="" alt="">
-                </div>
-                <div>
-
+            <section class="flex flex-col justify-between pl-[4vw] mt-[6vw] ">
+                <div v-for="item in commentMv" :key="item" class="flex">
+                    <div class="mr-[2.4vw] mt-[2vw]">
+                        <img :src="item.user.avatarUrl" alt="" class="w-[9.5vw] h-[9.5vw] rounded-full">
+                    </div>
+                    <div class="border-b border-[#f0f0f0] pt-[4vw] pr-[4vw] pb-[3.6vw] w-[100%]">
+                        <div class="flex justify-between items-center">
+                            <p class="text-[#676767]">{{ item.user.nickname }}</p>
+                            <div class="flex justify-between items-center">
+                                <span v-if="item.likedCount != 0" class="text-[#676767] mr-[1vw]">{{ item.likedCount }}</span>
+                                <Icon icon="icon-park-outline:good-one" color="#9b9b9b" class="w-[5vw] h-[5vw]"/>
+                            </div>
+                        </div>
+                        <p class="text-[#9b9b9b] mb-[3.7vw]">
+                            <span>{{ item.timeStr }} {{ item.ipLocation.location }}</span>
+                        </p>
+                        <p class="">{{ item.content }}</p>
+                    </div>
                 </div>
             </section>
         </van-popup>
+        <!-- 转发 -->
+        <van-share-sheet v-model="showShare" title="立即分享给好友" :options="options"/>
     </div>
 </template>
 <script>
@@ -120,8 +134,18 @@
                 currentTime: 0,
                 duration: 0,
                 activeName: '1', // 折叠
-                getMsg:true, // 留言抽屉
-                commentMv:[] // 评论数据
+                getMsg:false, // 留言抽屉
+                commentMv:[], // 评论数据
+                showShare:false, // 转发
+                options: [
+                    [   
+                        { name: '云音乐动态', icon: 'ri:netease-cloud-music-fill' },
+                        { name: '微信', icon: 'wechat' },
+                        { name: '朋友圈', icon: 'wechat-moments' },
+                        { name: '微博', icon: 'weibo' },
+                        { name: 'QQ', icon: 'qq' },
+                    ]
+                ],
             }
         },
         async created() {
@@ -147,6 +171,10 @@
             showMsg() {
                 this.getMsg = !this.getMsg
             },
+            // 转发
+            showForward() {
+                this.showShare = !this.showShare
+            },
             dataTruncation(playVolume) {
                 if (playVolume > 100000000) {
                     return `${Math.floor(playVolume / 100000000)}亿`;
@@ -157,12 +185,16 @@
                 }
             },
             playVideo() {
-                if(this.$refs.video.paused) {
-                    this.$refs.video.play();
-                    this.showIcon = false;
+                if(!this.getMsg) {
+                    if(this.$refs.video.paused) {
+                        this.$refs.video.play();
+                        this.showIcon = false;
+                    }else {
+                        this.$refs.video.pause();
+                        this.showIcon = true;
+                    }
                 }else {
-                    this.$refs.video.pause();
-                    this.showIcon = true;
+                    this.getMsg = false
                 }
             }
         }
