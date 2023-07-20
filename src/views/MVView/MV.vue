@@ -10,7 +10,7 @@
             <van-tabs swipeable animated class="mt-[15vw]" v-model="currentDisplayIndex">
                 <van-tab v-for="index in title" :key="index" :title="index" :name="index" class="sticky top-[10vw] dark">
                     <section class="mt-[5.5vw] w-[92vw] mx-auto font-bold">
-                        <div class="text-[#333] flex items-center mb-[5.2vw] dark:text-[#fff]" >更新时间：{{ convertDate(date) }}
+                        <div class="text-[#333] flex items-center mb-[5.2vw]" >更新时间：{{ convertDate(date) }}
                             <Icon icon="quill:warning-alt" color="#b3b3b3" class="w-[5vw] h-[5vw]" />
                         </div>
                         <div>
@@ -41,7 +41,7 @@
                                         </div>
                                     </div>
                                     <div class="">
-                                        <p class="text-[#333] text-[4vw] font-bold truncate w-[85.5vw] mb-[1vw] dark:text-[#fff]">{{ key.name }}</p>
+                                        <p class="text-[#333] text-[4vw] font-bold truncate w-[83.5vw] mb-[1vw]">{{ key.name }}</p>
                                         <p class="text-[#a3a3a3]">{{ key.artistName }}</p>
                                     </div>
                                 </div>
@@ -67,12 +67,12 @@ export default {
     methods: {
         // 返回上一级
         go() {
-            this.$router.go(-1)
+            this.$router.push('/HomeView')
         },
         dataTruncation(playVolume) {
             if (playVolume > 100000000) {
                 return `${Math.floor(playVolume / 100000000)}亿`;
-            } else if (playVolume > 100000) {
+            } else if (playVolume > 10000) {
                 return `${Math.floor(playVolume / 10000)}万`;
             } else {
                 return playVolume;

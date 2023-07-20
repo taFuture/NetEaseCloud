@@ -3,7 +3,7 @@
         <!-- 头部 -->
         <header class="flex justify-between items-center px-[4.6vw] h-[16vw]" v-show="!getMsg">
             <div>
-                <Icon icon="ph:arrow-left-light" color="white" class="w-[7vw] h-[7vw]"/>
+                <Icon icon="ph:arrow-left-light" color="white" class="w-[7vw] h-[7vw]" @click.native="() => $router.push('/MV')"/>
             </div>
             <div class="flex justify-between items-center">
                 <Icon icon="carbon:shrink-screen-filled" color="white" :horizontalFlip="true"  class="w-[7vw] h-[7vw] mr-[3vw]"/>
@@ -11,8 +11,8 @@
             </div>
         </header>
         <!-- 视频 -->
-        <section class="mt-[40vw] relative transition-all" @click="playVideo" :class="getMsg ? 'mt-[0vw] z-[9999]' : 'mt-[40vw]'">
-            <video :src="videoUrl" ref="video" autoplay></video>
+        <section class="relative transition-all" @click="playVideo" :class="getMsg ? 'mt-[0vw] z-[9999]' : 'mt-[40vw]'">
+            <video :src="videoUrl" ref="video" autoplay loop></video>
             <Icon icon="ph:play-fill" class="text-[#fff] opacity-60 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] z-[5] w-[20vw] h-[20vw]" v-if="showIcon"/>
         </section>
         <!-- 视频信息 -->
@@ -118,7 +118,7 @@
             </section>
         </van-popup>
         <!-- 转发 -->
-        <van-share-sheet v-model="showShare" title="立即分享给好友" :options="options"/>
+        <van-share-sheet v-model="showShare" title="立即分享给好友" :options="options" class="share"/>
     </div>
 </template>
 <script>
@@ -133,13 +133,12 @@
                 showIcon: false, // 暂停图标的显示
                 currentTime: 0,
                 duration: 0,
-                activeName: '1', // 折叠
+                activeName: '0', // 折叠
                 getMsg:false, // 留言抽屉
                 commentMv:[], // 评论数据
                 showShare:false, // 转发
                 options: [
                     [   
-                        { name: '云音乐动态', icon: 'ri:netease-cloud-music-fill' },
                         { name: '微信', icon: 'wechat' },
                         { name: '朋友圈', icon: 'wechat-moments' },
                         { name: '微博', icon: 'weibo' },
@@ -266,5 +265,31 @@
         to {
             transform: translate(-50%,-50%) rotate(360deg);
         }
+    }
+
+    .van-share-sheet__cancel{
+        display: none !important;
+    }
+
+    .van-share-sheet__option img {
+        width: 13.7vw;
+        height: 13.7vw;
+    }
+
+    .van-share-sheet__options {
+        padding: 5.5vw 0 5.5vw 5.5vw;
+    }
+
+    .share {
+        background: #212121;
+        opacity: 0.9;
+    }
+
+    .van-share-sheet__title {
+        color: #7c7c7c;
+    }
+
+    .van-share-sheet__name {
+        color: #ccc;
     }
 </style>
